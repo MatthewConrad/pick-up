@@ -1,11 +1,14 @@
 package com.nedaco.pickup;
 
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -65,7 +68,44 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         // don't want to continue using api client when the app is not in the foreground, so disconnect
         if(mGoogleApiClient.isConnected()) mGoogleApiClient.disconnect();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu_maps_activity; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps_activity, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        Intent intent;
+        int id = item.getItemId();
 
+        //noinspection SimplifiableIfStatement
+        switch (id)
+        {
+           // case R.id.map:
+            //    intent = new Intent(GameOverviewActivity.this,MapsActivity.class);
+            //    break;
+            case R.id.create_game:
+                intent = new Intent(MapsActivity.this,CreateGameActivity.class);
+                break;
+            case R.id.Preferences:
+                intent = new Intent(MapsActivity.this,PreferencesActivity.class);
+                break;
+            default:
+                intent = null;
+                break;
+
+        }
+        if(intent!=null)
+        {
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
