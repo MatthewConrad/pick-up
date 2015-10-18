@@ -46,8 +46,21 @@
             android:label="@string/title_activity_maps" >
             <intent-filter>
                 <action android:name="com.nedaco.pickup.MAPS" />
-                <category android:name="android.intent.category.DEFAULT"/>
+
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".GameOverviewActivity"
+            android:label="@string/title_activity_game_overview" >
+        </activity>
+        <activity
+            android:name=".CreateGameActivity"
+            android:label="@string/title_activity_create_game" >
+        </activity>
+        <activity
+            android:name=".PreferencesActivity"
+            android:label="@string/title_activity_preferences" >
         </activity>
     </application>
 

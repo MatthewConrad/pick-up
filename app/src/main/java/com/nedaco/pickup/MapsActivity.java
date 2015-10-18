@@ -1,14 +1,22 @@
 package com.nedaco.pickup;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.prefs.Preferences;
+
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -22,8 +30,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-    }
 
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu_maps_activity; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_maps_activity, menu);
+        return true;
+    }
 
     /**
      * Manipulates the map once available.
@@ -42,5 +57,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng columbus = new LatLng(39, -82);
         mMap.addMarker(new MarkerOptions().position(columbus).title("Marker in Columbus"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(columbus));
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        Intent intent;
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (id)
+        {
+            //case R.id.map:
+              //  intent = new Intent(MapsActivity.this,MapsActivity.class);
+                //break;
+            case R.id.create_game:
+                intent = new Intent(MapsActivity.this,CreateGameActivity.class);
+                break;
+            case R.id.Preferences:
+                intent = new Intent(MapsActivity.this,PreferencesActivity.class);
+                break;
+            default:
+                intent = null;
+                break;
+
+        }
+        if(intent!=null)
+        {
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
