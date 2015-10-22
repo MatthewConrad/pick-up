@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.parse.LogInCallback;
+import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +77,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-
+        Debug.startMethodTracing("login");
+        Parse.initialize(this, "MfGSulwjt077DoDOUnacmw4UEEdLko2JvAUWt19V", "VyjWUzWwKRA0dmnD2yRHPy9zEG051q5cwGeQgzHx");
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -139,7 +147,30 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
+    public void validateUser()
+    {
+        ParseUser.logInInBackground(mEmailView.getText().toString(), mPasswordView.getText().toString(), new LogInCallback() {
+            @Override
+            public void done(ParseUser parseUser, ParseException e) {
+                if (parseUser != null) {
+                    //LOGIN GOOD
+                    //Start new activity
+                    Intent intent = new Intent(LoginActivity.this, CreateGameActivity.class);
+                    startActivity(intent);
+                    //userLocalDB.userLoggedIn(true);
+                    finish();
+                } else {
+                    //LOGIN BAD
+                    fail();
 
+                }
+            }
+        });
+    }
+    public void fail()
+    {
+        Toast.makeText(getApplicationContext(), "Login Failed, Try Again", Toast.LENGTH_SHORT).show();
+    }
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -149,6 +180,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         if (mAuthTask != null) {
             return;
         }
+
+
 
         // Reset errors.
         mEmailView.setError(null);
@@ -186,9 +219,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         } else {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //showProgress(true);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
+            validateUser();
         }
     }
 
@@ -336,6 +370,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
+                Debug.stopMethodTracing();
+
                 //Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                 Intent intent = new Intent(LoginActivity.this, CreateGameActivity.class);
 

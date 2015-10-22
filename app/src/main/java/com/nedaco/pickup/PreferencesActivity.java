@@ -40,9 +40,6 @@ public class PreferencesActivity extends AppCompatActivity {
             case R.id.create_game:
                 intent = new Intent(PreferencesActivity.this,CreateGameActivity.class);
                 break;
-            //case R.id.Preferences:
-              //  intent = new Intent(PreferencesActivity.this,PreferencesActivity.class);
-               // break;
             default:
                 intent = null;
                 break;

@@ -6,10 +6,7 @@
             android:title="@string/title_activity_maps"
             android:orderInCategory="100"
             app:showAsAction="never"/>
-      <item android:id="@+id/create_game"
-            android:title="@string/title_activity_create_game"
-            android:orderInCategory="100"
-            app:showAsAction="never"/>
+
       <item android:id="@+id/Preferences"
             android:title="Preferences"
             android:orderInCategory="100"
