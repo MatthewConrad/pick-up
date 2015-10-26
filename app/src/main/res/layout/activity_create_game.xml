@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -9,32 +9,76 @@
                 tools:context="com.nedaco.pickup.CreateGameActivity"
     android:orientation="vertical">
 
+
     <TextView
-        android:text="Choose a sport:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+            android:id="@+id/text_sport"
+            android:text="Choose a sport:"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"/>
+
     <Spinner
-        android:id="@+id/sport_spinnerr"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:text="Number of players"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <TextView
-        android:text="Location:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-    android:text="Time"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-
-    <TextView
-        android:text="Invite friends"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:id="@+id/spin_sport"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignLeft="@+id/spin_numplayers"
+        android:layout_alignStart="@+id/spin_numplayers"/>
 
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_numplayers"
+            android:text="Number of players: "
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/text_sport"
+            />
+    <Spinner
+        android:id="@+id/spin_numplayers"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spin_sport"
+        android:layout_toRightOf="@+id/text_numplayers"
+        />
+
+        <TextView
+            android:id="@+id/text_location"
+            android:text="Location:"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/text_numplayers"
+            />
+    <Spinner
+        android:id="@+id/spin_location"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spin_numplayers"
+        android:layout_alignLeft="@+id/spin_numplayers"
+        android:layout_alignStart="@+id/spin_numplayers"/>
+        <TextView
+            android:id="@+id/text_time"
+            android:text="Time"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/text_location"
+            />
+    <Spinner
+        android:id="@+id/spin_time"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/spin_location"
+
+        android:layout_alignLeft="@+id/spin_location"
+        android:layout_alignStart="@+id/spin_location"/>
+
+        <TextView
+            android:id="@+id/text_invitefriends"
+            android:text="Invite friends"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/text_time"
+            />
+
+</RelativeLayout>
