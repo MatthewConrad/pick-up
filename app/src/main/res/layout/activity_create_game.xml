@@ -14,7 +14,7 @@
             android:id="@+id/text_sport"
             android:text="Choose a sport:"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"/>
+            android:layout_height="wrap_content"/>
 
     <Spinner
         android:id="@+id/spin_sport"
@@ -29,7 +29,7 @@
             android:id="@+id/text_numplayers"
             android:text="Number of players: "
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_sport"
             />
     <Spinner
@@ -45,7 +45,7 @@
             android:id="@+id/text_location"
             android:text="Location:"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_numplayers"
             />
     <Spinner
@@ -60,7 +60,7 @@
             android:id="@+id/text_time"
             android:text="Time"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_location"
             />
     <Spinner
@@ -77,8 +77,14 @@
             android:id="@+id/text_invitefriends"
             android:text="Invite friends"
             android:layout_width="wrap_content"
-            android:layout_height="25dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/text_time"
             />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create Game"
+        android:id="@+id/button_createGame" android:layout_below="@+id/spin_time"
+        android:layout_centerHorizontal="true" android:layout_marginTop="34dp"/>
 
 </RelativeLayout>
