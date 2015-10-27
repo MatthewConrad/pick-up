@@ -16,15 +16,29 @@
             android:layout_height="wrap_content"/>
 
 
-
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_discoveryMode" android:layout_gravity="right" android:checked="true"/>
     <TextView
         android:text="@string/notifications"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/switch_notifications" android:layout_gravity="right" android:checked="true"/>
     <TextView
         android:text="@string/distance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seekBar_distance" android:layout_gravity="center_horizontal" android:max="25"
+        android:indeterminate="false"
+        android:progress="20"
+        android:secondaryProgress="20"/>
     <TextView
         android:text="@string/filter_sports"
         android:layout_width="wrap_content"

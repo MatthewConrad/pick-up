@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import java.util.prefs.Preferences;
 
@@ -14,6 +16,32 @@ public class PreferencesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
+        final Switch discMode = (Switch) findViewById(R.id.switch_discoveryMode);
+        discMode.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            if (isChecked) {
+                // The toggle is enabled
+                discMode.setChecked(true);
+            } else {
+                discMode.setChecked(false);
+            }
+         }
+     });
+        final Switch sw_notificaitons = (Switch) findViewById(R.id.switch_notifications);
+        sw_notificaitons.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // The toggle is enabled
+                    sw_notificaitons.setChecked(true);
+                } else {
+                    sw_notificaitons.setChecked(false);
+                }
+            }
+        });
+
+
+
+
     }
 
     @Override
