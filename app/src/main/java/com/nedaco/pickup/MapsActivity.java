@@ -4,11 +4,12 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,10 +17,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -27,12 +26,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
  * blog.teamtreehouse.com/beginners-guide-location-android
  */
 public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, View.OnClickListener {
 
     // member variables
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
+    private FloatingActionButton mCenterButton;
+    private FloatingActionButton mAddButton;
 
     // static constants and strings
     public static final String TAG = MapsActivity.class.getSimpleName();
@@ -41,7 +42,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.test_layout);
+        setContentView(R.layout.activity_map);
 
         // instantiate the client
         mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
@@ -51,6 +52,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         // create LocationRequest
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER)
                 .setInterval(60*1000).setFastestInterval(10*1000);
+
+        // instatiate buttons
+        mCenterButton = (FloatingActionButton) this.findViewById(R.id.mapCenterBtn);
+        mCenterButton.setOnClickListener(this);
+
+        mAddButton = (FloatingActionButton) this.findViewById(R.id.mapAddBtn);
+        mAddButton.setOnClickListener(this);
     }
 
     @Override
@@ -106,6 +114,19 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void onClick(android.view.View v){
+        switch(v.getId()){
+            case R.id.mapCenterBtn:
+                Log.i("OnClick","recenter camera bitch");
+                recenterCamera();
+                break;
+            case R.id.mapAddBtn:
+                Intent intent = new Intent(MapsActivity.this, CreateGameActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -153,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         double currentLongitude = location.getLongitude();
 
         LatLng latLng = new LatLng(currentLatitude, currentLongitude);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
@@ -196,5 +217,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onLocationChanged(Location location) {
         handleNewLocation(location);
+    }
+
+    public void recenterCamera(){
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        double currentLatitude = location.getLatitude();
+        double currentLongitude = location.getLongitude();
+
+        LatLng latLng = new LatLng(currentLatitude, currentLongitude);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 }
