@@ -27,21 +27,17 @@ public class PreferencesActivity extends AppCompatActivity {
             }
          }
      });
-        final Switch sw_notificaitons = (Switch) findViewById(R.id.switch_notifications);
-        sw_notificaitons.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+        final Switch sw_notifications = (Switch) findViewById(R.id.switch_notifications);
+        sw_notifications.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     // The toggle is enabled
-                    sw_notificaitons.setChecked(true);
+                    sw_notifications.setChecked(true);
                 } else {
-                    sw_notificaitons.setChecked(false);
+                    sw_notifications.setChecked(false);
                 }
             }
         });
-
-
-
-
     }
 
     @Override

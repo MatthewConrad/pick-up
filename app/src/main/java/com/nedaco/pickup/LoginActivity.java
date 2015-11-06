@@ -1,13 +1,15 @@
 package com.nedaco.pickup;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Debug;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -40,6 +42,7 @@ import com.parse.ParseUser;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.READ_CONTACTS;
 
 /**
@@ -48,9 +51,10 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
 
     /**
-     * Id to identity READ_CONTACTS permission request.
+     * Ids to identify permission requests.
      */
     private static final int REQUEST_READ_CONTACTS = 0;
+    private static final int REQUEST_ACCESS_FINE_LOCATION = 1;
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -77,7 +81,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
-        Debug.startMethodTracing("login");
+
         Parse.initialize(this, "MfGSulwjt077DoDOUnacmw4UEEdLko2JvAUWt19V", "VyjWUzWwKRA0dmnD2yRHPy9zEG051q5cwGeQgzHx");
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -154,11 +158,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
                     //LOGIN GOOD
+
                     //Start new activity
-                    Intent intent = new Intent(LoginActivity.this, CreateGameActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     //userLocalDB.userLoggedIn(true);
                     finish();
+
                 } else {
                     //LOGIN BAD
                     fail();
@@ -370,10 +376,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
             if (success) {
                 finish();
-                Debug.stopMethodTracing();
 
-                //Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                Intent intent = new Intent(LoginActivity.this, CreateGameActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                //Intent intent = new Intent(LoginActivity.this, CreateGameActivity.class);
 
                 startActivity(intent);
             } else {

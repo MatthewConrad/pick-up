@@ -13,6 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="location_rationale">Location permission is needed to find nearby games.</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_game_overview">Game Overview</string>
 
