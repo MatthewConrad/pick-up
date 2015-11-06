@@ -27,11 +27,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
-import java.nio.channels.AlreadyConnectedException;
+import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
-import static android.Manifest.permission.READ_CONTACTS;
 
 
 /**
@@ -138,7 +142,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     public void onClick(android.view.View v) {
         switch (v.getId()) {
             case R.id.mapCenterBtn:
-                Log.i("OnClick", "recenter camera bitch");
+                Log.i("OnClick", "recenter camera!");
                 recenterCamera();
                 break;
             case R.id.mapAddBtn:
@@ -198,6 +202,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
+
+        getGames();
     }
 
     private void initializeMapServices(){
@@ -209,6 +215,30 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         // create LocationRequest
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER)
                 .setInterval(60 * 1000).setFastestInterval(10 * 1000);
+    }
+
+    private void getGames(){
+        Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        ParseGeoPoint locGeoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
+        Log.d("Games", "Current location: " + location.getLatitude()+", "+location.getLongitude());
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Game");
+        query.whereWithinMiles("location", locGeoPoint, 50.0); //eventually this will come from user preferences
+        query.setLimit(50);
+        query.findInBackground(new FindCallback<ParseObject>(){
+            public void done(List<ParseObject> gameList, com.parse.ParseException e){
+                if(e == null){
+                    Log.d("Games", "Retrieved " + gameList.size() + " games");
+                    for (ParseObject game : gameList) {
+                        ParseGeoPoint pos = (ParseGeoPoint) game.get("location");
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(pos.getLatitude(), pos.getLongitude()))
+                                .title((String) game.get("sport")));
+                    }
+                }else{
+                    Log.d("Games", "Error: " + e.getMessage());
+                }
+            }
+        });
     }
 
     private void getLocationPermission(){
