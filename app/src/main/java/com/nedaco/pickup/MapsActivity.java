@@ -27,12 +27,15 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -43,7 +46,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
  * blog.teamtreehouse.com/beginners-guide-location-android
  */
 public class MapsActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, View.OnClickListener {
+        GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener, View.OnClickListener, GoogleMap.OnInfoWindowClickListener {
 
     // member variables
     private GoogleMap mMap;
@@ -51,6 +54,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     private LocationRequest mLocationRequest;
     private FloatingActionButton mCenterButton;
     private FloatingActionButton mAddButton;
+    private HashMap<Marker, ParseObject> mGameObjects;
 
     // static constants and strings
     public static final String TAG = MapsActivity.class.getSimpleName();
@@ -151,6 +155,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 break;
         }
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker){
+        ParseObject game = mGameObjects.get(marker);
+        Log.d("MapsActivity", "Info Window Clicked for " + game.toString());
+    }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
      * installed) and the map has not already been instantiated.. This will ensure that we only ever
@@ -188,6 +198,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     private void setUpMap() {
         mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMyLocationEnabled(true);
+        mMap.setOnInfoWindowClickListener(this);
 
     }
 
@@ -217,6 +228,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 .setInterval(60 * 1000).setFastestInterval(10 * 1000);
     }
 
+    @SuppressWarnings("unchecked")
     private void getGames(){
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         ParseGeoPoint locGeoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
@@ -227,12 +239,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         query.findInBackground(new FindCallback<ParseObject>(){
             public void done(List<ParseObject> gameList, com.parse.ParseException e){
                 if(e == null){
+                    mGameObjects = new HashMap<>();
                     Log.d("Games", "Retrieved " + gameList.size() + " games");
                     for (ParseObject game : gameList) {
                         ParseGeoPoint pos = (ParseGeoPoint) game.get("location");
-                        mMap.addMarker(new MarkerOptions()
+                        ArrayList<String> playersArray = (ArrayList<String>) game.get("registered_players");
+                        int numRegisteredPlayers = 0;
+                        if(playersArray != null) numRegisteredPlayers = playersArray.size();
+                        Marker gameMarker = mMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(pos.getLatitude(), pos.getLongitude()))
-                                .title((String) game.get("sport")));
+                                .title((String) game.get("sport"))
+                                .snippet("Players: " + numRegisteredPlayers + "/" + game.get("number_of_players")));
+                        mGameObjects.put(gameMarker, game);
                     }
                 }else{
                     Log.d("Games", "Error: " + e.getMessage());
