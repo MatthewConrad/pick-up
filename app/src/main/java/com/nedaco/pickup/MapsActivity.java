@@ -159,7 +159,13 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public void onInfoWindowClick(Marker marker){
         ParseObject game = mGameObjects.get(marker);
-        Log.d("MapsActivity", "Info Window Clicked for " + game.toString());
+        Log.d("MapsActivity", "Info Window Clicked for " + game.getObjectId());
+
+        Intent overviewIntent = new Intent(MapsActivity.this, GameOverviewActivity.class);
+        overviewIntent.putExtra("gameObject", game.getObjectId());
+        startActivity(overviewIntent);
+
+
     }
     /**
      * Sets up the map if it is possible to do so (i.e., the Google Play services APK is correctly
