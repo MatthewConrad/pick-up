@@ -54,7 +54,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     private LocationRequest mLocationRequest;
     private FloatingActionButton mCenterButton;
     private FloatingActionButton mAddButton;
-    private HashMap<Marker, ParseObject> mGameObjects;
+    private HashMap<String, String> mGameObjects;
 
     // static constants and strings
     public static final String TAG = MapsActivity.class.getSimpleName();
@@ -93,6 +93,10 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+
+        if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
+            getGames();
+        }
     }
 
     @Override
@@ -104,6 +108,22 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             if (mGoogleApiClient.isConnected()) mGoogleApiClient.disconnect();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        super.onSaveInstanceState(savedInstanceState);
+
+        savedInstanceState.putSerializable("gameObjects", mGameObjects);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked" )
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+
+        mGameObjects = (HashMap<String, String>) savedInstanceState.getSerializable("gameObjects");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu_maps_activity; this adds items to the action bar if it is present.
@@ -158,11 +178,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onInfoWindowClick(Marker marker){
-        ParseObject game = mGameObjects.get(marker);
-        Log.d("MapsActivity", "Info Window Clicked for " + game.getObjectId());
+        String gameId = mGameObjects.get(marker.getId());
+        Log.d("MapsActivity", "Info Window Clicked for " + gameId);
 
         Intent overviewIntent = new Intent(MapsActivity.this, GameOverviewActivity.class);
-        overviewIntent.putExtra("gameObject", game.getObjectId());
+        overviewIntent.putExtra("gameObject", gameId);
         startActivity(overviewIntent);
 
 
@@ -247,6 +267,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 if(e == null){
                     mGameObjects = new HashMap<>();
                     Log.d("Games", "Retrieved " + gameList.size() + " games");
+                    mMap.clear();
                     for (ParseObject game : gameList) {
                         ParseGeoPoint pos = (ParseGeoPoint) game.get("location");
                         ArrayList<String> playersArray = (ArrayList<String>) game.get("registered_players");
@@ -256,7 +277,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                                 .position(new LatLng(pos.getLatitude(), pos.getLongitude()))
                                 .title((String) game.get("sport"))
                                 .snippet("Players: " + numRegisteredPlayers + "/" + game.get("number_of_players")));
-                        mGameObjects.put(gameMarker, game);
+                        mGameObjects.put(gameMarker.getId(), game.getObjectId());
                     }
                 }else{
                     Log.d("Games", "Error: " + e.getMessage());
