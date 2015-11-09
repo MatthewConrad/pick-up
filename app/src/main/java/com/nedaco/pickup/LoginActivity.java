@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private Button mSignUp;
     private String username, password;
     User_LocalDB userLocalDB;
+    User user;
 
 
     @Override
@@ -220,7 +221,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     //Start new activity
                     Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
-                    //userLocalDB.userLoggedIn(true);
+                    userLocalDB.userLoggedIn(true);
                     finish();
 
                 } else {
@@ -230,6 +231,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
         });
+        if(userLocalDB.isUserLoggedIn()) {
+            userLocalDB.storeData(user);
+        }
     }
     public void fail()
     {

@@ -31,20 +31,7 @@ public class User_LocalDB {
         spEditor.putString("username", user.username);
         spEditor.putString("password", user.password);
     }
-    /*public void storeData(User_Class user_class){
 
-        SharedPreferences.Editor spEditor = userLocalDB.edit();
-        spEditor.putString("username", user_class.username);
-        spEditor.putString("password", user_class.password);
-        spEditor.putString("total_plays", user_class.getTotal_plays());
-        spEditor.putString("total_time", user_class.getTotal_time());
-        spEditor.putString("available_plays", user_class.getAvailable_plays());
-        spEditor.putString("bolus_belt", user_class.getBolus_betl());
-        spEditor.putString("glucose_belt", user_class.getGlucose_belt());
-        spEditor.putString("monkey_bucks", user_class.getMonkey_bucks());
-
-        spEditor.apply();
-    }*/
 
     public User getLogin(){
 
