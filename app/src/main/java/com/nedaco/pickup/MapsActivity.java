@@ -52,8 +52,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     private GoogleMap mMap;
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    private FloatingActionButton mCenterButton;
-    private FloatingActionButton mAddButton;
     private HashMap<String, String> mGameObjects;
 
     // static constants and strings
@@ -71,11 +69,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         setContentView(R.layout.activity_map);
 
         // instantiate buttons
-        mCenterButton = (FloatingActionButton) this.findViewById(R.id.mapCenterBtn);
-        mCenterButton.setOnClickListener(this);
+        FloatingActionButton centerButton = (FloatingActionButton) this.findViewById(R.id.mapCenterBtn);
+        centerButton.setOnClickListener(this);
 
-        mAddButton = (FloatingActionButton) this.findViewById(R.id.mapAddBtn);
-        mAddButton.setOnClickListener(this);
+        FloatingActionButton addButton = (FloatingActionButton) this.findViewById(R.id.mapAddBtn);
+        addButton.setOnClickListener(this);
     }
 
     @Override

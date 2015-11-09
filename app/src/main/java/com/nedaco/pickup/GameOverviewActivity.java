@@ -1,6 +1,8 @@
 package com.nedaco.pickup;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,10 +17,12 @@ import android.widget.TextView;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.IOException;
 import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,7 +130,15 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
                     mSportField.setText(mGame.get("sport").toString());
                     mTimeField.setText(mGame.get("time").toString());
                     mNumPlayersField.setText(mGame.get("number_of_players").toString());
-                    mLocationField.setText(mGame.get("location").toString());
+
+                    ParseGeoPoint location = (ParseGeoPoint) mGame.get("location");
+                    mLocationField.setText(location.toString());
+                    try{
+                        Address address = new Geocoder(GameOverviewActivity.this).getFromLocation(location.getLatitude(), location.getLongitude(), 1).get(0);
+                        mLocationField.setText(address.getAddressLine(0));
+                    }catch(IOException ex) {
+                        Log.e("GameOverviewActivity", "Error: " + ex.getMessage());
+                    }
 
                     ArrayList<String> playersArray = (ArrayList<String>) mGame.get("registered_players");
                     if(playersArray == null){

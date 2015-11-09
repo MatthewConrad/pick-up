@@ -16,6 +16,7 @@
     <string name="location_rationale">Location permission is needed to find nearby games.</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_game_overview">Game Overview</string>
+    <string name="title_activity_create_game">Create a Game</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="register">Sign Up</string>
@@ -28,7 +29,7 @@
     <string name="filter_sports">Filter Sports</string>
 
     <string name="action_settings">Settings</string>
-    <string name="title_activity_create_game">Create a Game</string>
+
 
     <string-array name="sport_spinner">
         <item>Football</item>
