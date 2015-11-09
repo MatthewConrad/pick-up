@@ -6,10 +6,15 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.CompoundButton;
+import android.widget.SeekBar;
 import android.widget.Switch;
+import android.widget.TextView;
 
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.prefs.Preferences;
 
 public class PreferencesActivity extends AppCompatActivity {
@@ -18,27 +23,47 @@ public class PreferencesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
-        final Switch discMode = (Switch) findViewById(R.id.switch_discoveryMode);
-        discMode.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            if (isChecked) {
-                // The toggle is enabled
-                discMode.setChecked(true);
-            } else {
-                discMode.setChecked(false);
+
+//        final Switch discMode = (Switch) findViewById(R.id.switch_discoveryMode);
+//        discMode.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+//        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//            if (isChecked) {
+//                // The toggle is enabled
+//                discMode.setChecked(true);
+//            } else {
+//                discMode.setChecked(false);
+//            }
+//         }
+//     });
+//        final Switch sw_notifications = (Switch) findViewById(R.id.switch_notifications);
+//        sw_notifications.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked) {
+//                    // The toggle is enabled
+//                    sw_notifications.setChecked(true);
+//                } else {
+//                    sw_notifications.setChecked(false);
+//                }
+//            }
+//        });
+        final SeekBar distBar = (SeekBar) findViewById(R.id.seekBar_distance);
+        distBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
+//                ParseObject distance = new ParseObject("Distance");
+//                distance.put("distance",progress);
+                distBar.setSecondaryProgress(progress);
+                ParseObject savedDistance = new ParseObject("SavedDistance");
+                savedDistance.put("SavedDistance",progress);
+                List<ParseObject> objectSaves = new LinkedList<>();
+                objectSaves.add(savedDistance);
+                ParseUser.saveAllInBackground(objectSaves);
+
             }
-         }
-     });
-        final Switch sw_notifications = (Switch) findViewById(R.id.switch_notifications);
-        sw_notifications.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener(){
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    // The toggle is enabled
-                    sw_notifications.setChecked(true);
-                } else {
-                    sw_notifications.setChecked(false);
-                }
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
         });
     }
 
