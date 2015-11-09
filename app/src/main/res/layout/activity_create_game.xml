@@ -9,82 +9,84 @@
                 tools:context="com.nedaco.pickup.CreateGameActivity"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <TextView
-            android:id="@+id/text_sport"
-            android:text="Choose a sport:"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+        <TextView
+                android:id="@+id/text_sport"
+                android:text="Choose a sport:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
-    <Spinner
-        android:id="@+id/spin_sport"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignLeft="@+id/spin_numplayers"
-        android:layout_alignStart="@+id/spin_numplayers"/>
+        <Spinner
+            android:id="@+id/spin_sport"
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"/>
 
 
         <TextView
             android:id="@+id/text_numplayers"
-            android:text="Number of players: "
+            android:text="Number of players"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_sport"
-            />
-    <Spinner
-        android:id="@+id/spin_numplayers"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/spin_sport"
-        android:layout_toRightOf="@+id/text_numplayers"
-        />
+            android:layout_height="wrap_content" />
 
+        <EditText
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/editText_numPlayers"
+            android:layout_marginBottom="12dp"
+            android:hint="2-16" />
         <TextView
             android:id="@+id/text_location"
-            android:text="Location:"
+            android:text="Location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_numplayers"
-            />
-    <Spinner
-        android:id="@+id/spin_location"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/spin_numplayers"
-        android:layout_alignLeft="@+id/spin_numplayers"
-        android:layout_alignStart="@+id/spin_numplayers"/>
+            android:text="Use Current Location"
+            android:id="@+id/checkBox_useLocation" />
+
+        <AutoCompleteTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter a location..."
+            android:id="@+id/autoCompleteTextView_location"
+            android:layout_marginBottom="12dp" />
+
         <TextView
             android:id="@+id/text_time"
             android:text="Time"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_location"
-            />
-    <Spinner
-        android:id="@+id/spin_time"
-        android:layout_width="96dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/spin_location"
+            android:layout_height="wrap_content" />
 
-        android:layout_alignLeft="@+id/spin_location"
-        android:layout_alignStart="@+id/spin_location"/>
+        <EditText
+            android:layout_width="144dp"
+            android:layout_height="48dp"
+            android:ems="10"
+            android:focusable="false"
+            android:id="@+id/editText_time"
+            android:layout_marginBottom="12dp" />
 
-        <TextView
-            android:id="@+id/text_invitefriends"
-            android:text="Invite friends"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_time"
-            />
+    </LinearLayout>
+
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Game"
-        android:id="@+id/button_createGame" android:layout_below="@+id/spin_time"
-        android:layout_centerHorizontal="true" android:layout_marginTop="34dp"/>
+        android:layout_width="fill_parent"
+        android:layout_height="72dp"
+        android:text="CREATE"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorAccent"
+        android:id="@+id/button_createGame"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
