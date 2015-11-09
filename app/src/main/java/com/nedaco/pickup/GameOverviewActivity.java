@@ -84,6 +84,18 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
             case R.id.Preferences:
                 intent = new Intent(GameOverviewActivity.this,PreferencesActivity.class);
                 break;
+            case R.id.LogOut:
+
+                ParseUser user = ParseUser.getCurrentUser();
+
+                if(user!= null)
+                {
+                    user.logOut();
+                }
+                intent = new Intent(GameOverviewActivity.this,LoginActivity.class);
+                finish();
+
+                break;
             default:
                 intent = null;
                 break;

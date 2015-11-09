@@ -33,6 +33,7 @@ import com.parse.FindCallback;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,6 +130,18 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 break;
             case R.id.Preferences:
                 intent = new Intent(MapsActivity.this,PreferencesActivity.class);
+                break;
+            case R.id.LogOut:
+                ParseUser user = ParseUser.getCurrentUser();
+
+                if(user!= null)
+                {
+                    user.logOut();
+                }
+
+                intent = new Intent(MapsActivity.this,LoginActivity.class);
+                finish();
+
                 break;
             default:
                 intent = null;

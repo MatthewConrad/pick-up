@@ -10,6 +10,9 @@
             android:title="@string/title_activity_create_game"
             android:orderInCategory="100"
             app:showAsAction="never"/>
-
+      <item android:id="@+id/LogOut"
+            android:title="Log Out"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
 
 </menu>

@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.prefs.Preferences;
 
@@ -148,6 +149,19 @@ public class CreateGameActivity extends AppCompatActivity implements
             //  break;
             case R.id.Preferences:
                 intent = new Intent(CreateGameActivity.this, PreferencesActivity.class);
+                break;
+            case R.id.LogOut:
+
+                ParseUser user = ParseUser.getCurrentUser();
+
+                if(user!= null)
+                {
+                    user.logOut();
+                }
+
+                intent = new Intent(CreateGameActivity.this,LoginActivity.class);
+                finish();
+
                 break;
             default:
                 intent = null;

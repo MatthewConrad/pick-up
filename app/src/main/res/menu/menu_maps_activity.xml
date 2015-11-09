@@ -11,5 +11,9 @@
           android:title="Preferences"
           android:orderInCategory="100"
           app:showAsAction="never"/>
+      <item android:id="@+id/LogOut"
+            android:title="Log Out"
+            android:orderInCategory="100"
+            app:showAsAction="never"/>
 
 </menu>

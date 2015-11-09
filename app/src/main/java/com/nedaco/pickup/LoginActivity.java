@@ -6,6 +6,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -74,16 +75,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private View mProgressView;
     private View mLoginFormView;
     private Button mSignUp;
+    private String username, password;
+    User_LocalDB userLocalDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //check if user is still logged in.
+
+
+        stillLoggedIn();
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        Parse.initialize(this, "MfGSulwjt077DoDOUnacmw4UEEdLko2JvAUWt19V", "VyjWUzWwKRA0dmnD2yRHPy9zEG051q5cwGeQgzHx");
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -121,6 +130,42 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      
     }
 
+    private void stillLoggedIn()
+    {
+        userLocalDB = new User_LocalDB(this);
+        userLocalDB.getLogin();
+        username = userLocalDB.getUsername(username);
+        password = userLocalDB.getPassword(password);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if(!username.equals("")){
+                    ParseUser.logInInBackground(username, password, new LogInCallback() {
+                        @Override
+                        public void done(ParseUser parseUser, ParseException e) {
+                            if (parseUser != null) {
+                                //LOGIN GOOD
+                                //Start new activity
+                                //grab_Game_Stats();
+                                Intent openMainActivity = new Intent(LoginActivity.this, MapsActivity.class);
+                                startActivity(openMainActivity);
+                                finish();
+                            }
+                        }
+                    });
+                }
+                else{
+                   /* user.clearData();
+                    Intent openLoginScreen = new Intent(Loading_Screen.this, Login_Screen.class);
+                    startActivity(openLoginScreen);
+                    finish();*/
+                }
+            }
+        }, 2500);
+
+    }
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -405,6 +450,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+
+
+        public void logOut(View view) {
+            ParseUser user = ParseUser.getCurrentUser();
+            if (user != null) {
+                user.logOut();
+                userLocalDB.clearData();
+            }
+            Intent intent = new Intent(LoginActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 }
 

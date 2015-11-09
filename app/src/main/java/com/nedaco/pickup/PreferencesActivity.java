@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.parse.ParseUser;
+
 import java.util.prefs.Preferences;
 
 public class PreferencesActivity extends AppCompatActivity {
@@ -63,6 +65,19 @@ public class PreferencesActivity extends AppCompatActivity {
                 break;
             case R.id.create_game:
                 intent = new Intent(PreferencesActivity.this,CreateGameActivity.class);
+                break;
+            case R.id.LogOut:
+
+                ParseUser user = ParseUser.getCurrentUser();
+
+                if(user!= null)
+                {
+                    user.logOut();
+                }
+
+                intent = new Intent(PreferencesActivity.this,LoginActivity.class);
+                finish();
+
                 break;
             default:
                 intent = null;
