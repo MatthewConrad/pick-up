@@ -2,24 +2,61 @@ package com.nedaco.pickup;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
+import com.parse.LogInCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseUser;
 
 /**
  * Created by petrodanylewycz on 11/9/15.
  */
 public class MainActivity extends AppCompatActivity{
 
+    private String username, password;
+    User_LocalDB userLocalDB;
+    User user;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-        Parse.initialize(this, "MfGSulwjt077DoDOUnacmw4UEEdLko2JvAUWt19V", "VyjWUzWwKRA0dmnD2yRHPy9zEG051q5cwGeQgzHx");
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        userLocalDB = new User_LocalDB(this);
+        userLocalDB.getLogin();
+        username = userLocalDB.getUsername(username);
+        password = userLocalDB.getPassword(password);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                if (!username.equals("")) {
+                    ParseUser.logInInBackground(username, password, new LogInCallback() {
+                        @Override
+                        public void done(ParseUser parseUser, ParseException e) {
+                            if (parseUser != null) {
+                                //LOGIN GOOD
+                                //Start new activity
+                                //grab_Game_Stats();
+                                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                } else {
+                    userLocalDB.clearData();
+                    Intent openLoginScreen = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(openLoginScreen);
+                    finish();
+                }
+            }
+        }, 2500);
+
 
     }
 }

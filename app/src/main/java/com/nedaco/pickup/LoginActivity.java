@@ -85,31 +85,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //check if user is still logged in.
-
-
-        stillLoggedIn();
-
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                String username = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
+                 user = new User(username, password);
                 attemptLogin();
             }
         });
@@ -128,45 +116,21 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-     
-    }
-
-    private void stillLoggedIn()
-    {
         userLocalDB = new User_LocalDB(this);
-        userLocalDB.getLogin();
-        username = userLocalDB.getUsername(username);
-        password = userLocalDB.getPassword(password);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
 
+        mPasswordView = (EditText) findViewById(R.id.password);
+        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void run() {
-                if(!username.equals("")){
-                    ParseUser.logInInBackground(username, password, new LogInCallback() {
-                        @Override
-                        public void done(ParseUser parseUser, ParseException e) {
-                            if (parseUser != null) {
-                                //LOGIN GOOD
-                                //Start new activity
-                                //grab_Game_Stats();
-                                Intent openMainActivity = new Intent(LoginActivity.this, MapsActivity.class);
-                                startActivity(openMainActivity);
-                                finish();
-                            }
-                        }
-                    });
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                    attemptLogin();
+                    return true;
                 }
-                else{
-                   /* user.clearData();
-                    Intent openLoginScreen = new Intent(Loading_Screen.this, Login_Screen.class);
-                    startActivity(openLoginScreen);
-                    finish();*/
-                }
+                return false;
             }
-        }, 2500);
-
+        });
     }
+
     private void populateAutoComplete() {
         if (!mayRequestContacts()) {
             return;
@@ -222,6 +186,8 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
                     userLocalDB.userLoggedIn(true);
+                    userLocalDB.storeData(user);
+
                     finish();
 
                 } else {
@@ -231,9 +197,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
         });
-        if(userLocalDB.isUserLoggedIn()) {
-            userLocalDB.storeData(user);
-        }
+
     }
     public void fail()
     {
