@@ -87,14 +87,21 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             getLocationPermission();
         }else {
             initializeMapServices();
-        }
-        setUpMapIfNeeded();
-        if (mGoogleApiClient != null) {
-            mGoogleApiClient.connect();
-        }
+            setUpMapIfNeeded();
+            if (mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+            }
 
-        if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
-            getGames();
+            if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
+                getGames();
+            }setUpMapIfNeeded();
+            if (mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+            }
+
+            if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
+                getGames();
+            }
         }
     }
 
@@ -331,6 +338,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
             case REQUEST_ACCESS_FINE_LOCATION:
                 if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     initializeMapServices();
+                    setUpMapIfNeeded();
+                    if (mGoogleApiClient != null) {
+                        mGoogleApiClient.connect();
+                    }
+
+                    if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
+                        getGames();
+                    }
                 }
                 break;
         }
