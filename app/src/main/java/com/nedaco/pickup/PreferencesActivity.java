@@ -52,6 +52,21 @@ public class PreferencesActivity extends AppCompatActivity {
 
         final TextView mDistanceText = (TextView)findViewById(R.id.distanceDisplay);
         final SeekBar distBar = (SeekBar) findViewById(R.id.seekBar_distance);
+        ParseQuery<ParseObject> distanceQuery = ParseQuery.getQuery("Preferences");
+        distanceQuery.whereEqualTo("user", ParseUser.getCurrentUser());
+        //ParseObject preferences;
+        distanceQuery.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, com.parse.ParseException e) {
+                if (e == null) {
+                    distBar.setProgress(objects.get(0).getInt("distance"));
+                    distBar.setProgress(distBar.getProgress());
+                    mDistanceText.setText(Integer.toString(distBar.getProgress()));
+                } else {
+
+                }
+            }
+        });
         distBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
             int progressChanged = 0;
             public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser){
