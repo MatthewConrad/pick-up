@@ -30,6 +30,7 @@ public class User_LocalDB {
         SharedPreferences.Editor spEditor = userLocalDB.edit();
         spEditor.putString("username", user.username);
         spEditor.putString("password", user.password);
+        spEditor.commit();
     }
 
 
