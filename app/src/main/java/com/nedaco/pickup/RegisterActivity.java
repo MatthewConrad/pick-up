@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -56,10 +57,17 @@ public class RegisterActivity extends AppCompatActivity {
 
 // other fields can be set just like with ParseObject
        //user.put("phone", "650-253-0000");
-
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.logOut();
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
+                    ParseObject preferences = new ParseObject("Preferences");
+                    preferences.put("user",ParseUser.getCurrentUser());
+                    preferences.put("distance", 20);
+                    //String[] games =  getResources().getStringArray(R.array.sport_spinner);
+                    //preferences.put("Games", games);
+                    preferences.saveInBackground();
                     Toast.makeText(getApplicationContext(), "Sign-Up Succesful, Thank you", Toast.LENGTH_SHORT).show();
                     //Start new activity
                    // Intent intent = new Intent(RegisterActivity.this, Logi.class);

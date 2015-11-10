@@ -10,15 +10,18 @@ import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.text.ParseException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.prefs.Preferences;
 
 public class PreferencesActivity extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,22 +49,36 @@ public class PreferencesActivity extends AppCompatActivity {
 //                }
 //            }
 //        });
+
+        final TextView mDistanceText = (TextView)findViewById(R.id.distanceDisplay);
         final SeekBar distBar = (SeekBar) findViewById(R.id.seekBar_distance);
         distBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser){
-//                ParseObject distance = new ParseObject("Distance");
-//                distance.put("distance",progress);
-                distBar.setSecondaryProgress(progress);
-                ParseObject savedDistance = new ParseObject("SavedDistance");
-                savedDistance.put("SavedDistance",progress);
-                List<ParseObject> objectSaves = new LinkedList<>();
-                objectSaves.add(savedDistance);
-                ParseUser.saveAllInBackground(objectSaves);
-
+            int progressChanged = 0;
+            public void onProgressChanged(SeekBar seekBar, final int progress, boolean fromUser){
+                progressChanged = progress;
             }
             public void onStopTrackingTouch(SeekBar seekBar) {
+                distBar.setSecondaryProgress(progressChanged);
+                mDistanceText.setText(Integer.toString(progressChanged));
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                ParseQuery<ParseObject> preferenceQuery = ParseQuery.getQuery("Preferences");
+                preferenceQuery.whereEqualTo("user", currentUser);
+                //ParseObject preferences;
+                preferenceQuery.findInBackground(new FindCallback<ParseObject>() {
+                    @Override
+                    public void done(List<ParseObject> objects, com.parse.ParseException e) {
+                        if (e == null) {
+                            ParseObject preferences = objects.get(0);
+                            preferences.put("distance",progressChanged);
+                            preferences.saveInBackground();
+                        } else {
+
+                        }
+                    }
+                });
             }
             public void onStartTrackingTouch(SeekBar seekBar) {
+
             }
 
         });
