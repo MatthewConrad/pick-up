@@ -65,6 +65,6 @@
         <item>7</item>
         <item>8</item>
     </string-array>
-    <string name="title_activity_preferences">PreferencesActivity</string>
+    <string name="title_activity_preferences">Preferences</string>
     <string name="title_activity_register">RegisterActivity</string>
 </resources>
