@@ -58,11 +58,13 @@
         </activity>
         <activity
             android:name=".GameOverviewActivity"
-            android:label="@string/title_activity_game_overview" >
+            android:label="@string/title_activity_game_overview"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name=".CreateGameActivity"
-            android:label="@string/title_activity_create_game" >
+            android:label="@string/title_activity_create_game"
+            android:windowSoftInputMode="adjustPan">
         </activity>
         <activity
             android:name=".PreferencesActivity"

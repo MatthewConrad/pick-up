@@ -9,72 +9,80 @@
                 tools:context="com.nedaco.pickup.CreateGameActivity"
     android:orientation="vertical">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/button_createGame">
 
-        <TextView
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
                 android:id="@+id/text_sport"
                 android:text="Choose a sport:"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
-        <Spinner
-            android:id="@+id/spin_sport"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="12dp"/>
+            <Spinner
+                android:id="@+id/spin_sport"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:layout_marginBottom="12dp" />
 
 
-        <TextView
-            android:id="@+id/text_numplayers"
-            android:text="Number of players"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/text_numplayers"
+                android:text="Number of players"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <EditText
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editText_numPlayers"
-            android:layout_marginBottom="12dp"
-            android:hint="2-16" />
-        <TextView
-            android:id="@+id/text_location"
-            android:text="Location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <EditText
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/editText_numPlayers"
+                android:layout_marginBottom="12dp"
+                android:hint="2-16" />
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Use Current Location"
-            android:id="@+id/checkBox_useLocation" />
+            <TextView
+                android:id="@+id/text_location"
+                android:text="Location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Enter a location..."
-            android:id="@+id/autoCompleteTextView_location"
-            android:layout_marginBottom="12dp" />
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Use Current Location"
+                android:id="@+id/checkBox_useLocation" />
 
-        <TextView
-            android:id="@+id/text_time"
-            android:text="Time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter a location..."
+                android:id="@+id/autoCompleteTextView_location"
+                android:layout_marginBottom="12dp" />
 
-        <EditText
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:ems="10"
-            android:focusable="false"
-            android:id="@+id/editText_time"
-            android:layout_marginBottom="12dp" />
+            <TextView
+                android:id="@+id/text_time"
+                android:text="Time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:ems="10"
+                android:focusable="false"
+                android:id="@+id/editText_time"
+                android:layout_marginBottom="12dp" />
+
+        </LinearLayout>
+    </ScrollView>
 
     <Button
         android:layout_width="fill_parent"

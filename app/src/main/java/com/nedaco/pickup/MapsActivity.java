@@ -75,6 +75,11 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
         FloatingActionButton addButton = (FloatingActionButton) this.findViewById(R.id.mapAddBtn);
         addButton.setOnClickListener(this);
+
+        // instantiate api client
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
     }
 
     @Override
@@ -161,7 +166,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 if(user!= null)
                 {
-                    user.logOut();
+                    ParseUser.logOut();
                 }
 
                 intent = new Intent(MapsActivity.this,LoginActivity.class);
@@ -262,11 +267,6 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     private void initializeMapServices(){
-        // instantiate the client
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API).build();
-
         // create LocationRequest
         mLocationRequest = LocationRequest.create().setPriority(LocationRequest.PRIORITY_LOW_POWER)
                 .setInterval(60 * 1000).setFastestInterval(10 * 1000);
