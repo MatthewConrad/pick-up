@@ -1,25 +1,20 @@
 package com.nedaco.pickup;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.CompoundButton;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.text.ParseException;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 public class PreferencesActivity extends AppCompatActivity {
     @Override
@@ -86,11 +81,12 @@ public class PreferencesActivity extends AppCompatActivity {
                             ParseObject preferences = objects.get(0);
                             preferences.put("distance",progressChanged);
                             preferences.saveInBackground();
-                        } else {
-
                         }
                     }
                 });
+
+                SharedPreferences sharedPref = getSharedPreferences("PickUp", MODE_PRIVATE);
+                sharedPref.edit().putInt("distance", progressChanged).apply();
             }
             public void onStartTrackingTouch(SeekBar seekBar) {
 
@@ -129,7 +125,7 @@ public class PreferencesActivity extends AppCompatActivity {
 
                 if(user!= null)
                 {
-                    user.logOut();
+                    ParseUser.logOut();
                 }
 
                 intent = new Intent(PreferencesActivity.this,LoginActivity.class);

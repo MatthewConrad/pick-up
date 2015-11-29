@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
@@ -277,8 +278,12 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         ParseGeoPoint locGeoPoint = new ParseGeoPoint(location.getLatitude(), location.getLongitude());
         Log.d("Games", "Current location: " + location.getLatitude()+", "+location.getLongitude());
+
+        SharedPreferences sharedPref = getSharedPreferences("PickUp", MODE_PRIVATE);
+        int distance = sharedPref.getInt("distance", 20);
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Game");
-        query.whereWithinMiles("location", locGeoPoint, 50.0); //eventually this will come from user preferences
+        query.whereWithinMiles("location", locGeoPoint, distance);
         query.setLimit(50);
         query.findInBackground(new FindCallback<ParseObject>(){
             public void done(List<ParseObject> gameList, com.parse.ParseException e){
