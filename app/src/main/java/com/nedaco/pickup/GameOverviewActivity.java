@@ -3,15 +3,18 @@ package com.nedaco.pickup;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,10 +26,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.io.IOException;
-import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.Preferences;
 
 public class GameOverviewActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -47,7 +48,17 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
         mLocationField = (TextView) this.findViewById(R.id.viewLocationField);
         mNumPlayersField = (TextView) this.findViewById(R.id.viewNumPlayersField);
         mTimeField = (TextView) this.findViewById(R.id.viewTimeField);
+
         mPlayersList = (ListView) this.findViewById(R.id.viewPlayersList);
+        mPlayersList.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
 
         mJoinButton = (Button) this.findViewById(R.id.joinGameButton);
         mJoinButton.setOnClickListener(this);
@@ -94,7 +105,7 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
 
                 if(user!= null)
                 {
-                    user.logOut();
+                    ParseUser.logOut();
                 }
                 intent = new Intent(GameOverviewActivity.this,LoginActivity.class);
                 finish();
@@ -159,11 +170,40 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
                     }
                     ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(GameOverviewActivity.this, android.R.layout.simple_list_item_1, playersArray);
                     mPlayersList.setAdapter(arrayAdapter);
+                    setListViewHeightBasedOnChildren(mPlayersList);
 
                 }else{
                     Log.e("GameOverview", "Error: " + e.getMessage());
                 }
             }
         });
+    }
+
+    /****
+     * Method for Setting the Height of the ListView dynamically.
+     * *** Hack to fix the issue of not showing all the items of the ListView
+     * *** when placed inside a ScrollView  ***
+     * <p/>
+     * Taken from http://stackoverflow.com/questions/18367522/android-list-view-inside-a-scroll-view
+     */
+    public static void setListViewHeightBasedOnChildren(ListView listView) {
+        ListAdapter listAdapter = listView.getAdapter();
+        if (listAdapter == null)
+            return;
+
+        int desiredWidth = View.MeasureSpec.makeMeasureSpec(listView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+        int totalHeight = 0;
+        View view = null;
+        for (int i = 0; i < listAdapter.getCount(); i++) {
+            view = listAdapter.getView(i, view, listView);
+            if (i == 0)
+                view.setLayoutParams(new ViewGroup.LayoutParams(desiredWidth, AbsListView.LayoutParams.WRAP_CONTENT));
+
+            view.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+            totalHeight += view.getMeasuredHeight();
+        }
+        ViewGroup.LayoutParams params = listView.getLayoutParams();
+        params.height = totalHeight + (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+        listView.setLayoutParams(params);
     }
 }
