@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -168,6 +169,8 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
                 if(user!= null)
                 {
                     ParseUser.logOut();
+
+
                 }
 
                 intent = new Intent(MapsActivity.this,LoginActivity.class);

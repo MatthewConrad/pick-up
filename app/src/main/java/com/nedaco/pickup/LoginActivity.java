@@ -31,6 +31,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private UserLoginTask mAuthTask = null;
 
     // UI references.
+    private CheckBox ckBx;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
@@ -85,11 +87,24 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
+
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        mPasswordView = (EditText) findViewById(R.id.password);
+        Intent in = getIntent();
+
+
+        mEmailView.setText(in.getStringExtra("usrname"));
+        mPasswordView.setText(in.getStringExtra("pwd"));
         populateAutoComplete();
 
-
+       ckBx = (CheckBox) findViewById(R.id.checkbox1);
+        if(in.getStringExtra("usrname")!=null)
+        {
+            ckBx.setChecked(true);
+        }
 
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -118,7 +133,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
         userLocalDB = new User_LocalDB(this);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -181,22 +195,29 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             public void done(ParseUser parseUser, ParseException e) {
                 if (parseUser != null) {
                     //LOGIN GOOD
-
-                    //Start new activity
+                    userLocalDB.userLoggedIn(true);
+                    userLocalDB.storeData(user, ckBx.isChecked());
                     Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
                     startActivity(intent);
-                    userLocalDB.userLoggedIn(true);
-                    userLocalDB.storeData(user);
-
                     finish();
-
                 } else {
+
                     //LOGIN BAD
                     fail();
 
                 }
             }
         });
+
+
+
+
+
+        //Start new activity
+
+
+
+
 
     }
     public void fail()

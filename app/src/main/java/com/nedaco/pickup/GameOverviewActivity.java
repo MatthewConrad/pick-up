@@ -43,6 +43,7 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_overview);
+        setContentView(R.layout.activity_game_overview);
 
         mSportField = (TextView) this.findViewById(R.id.viewSportField);
         mLocationField = (TextView) this.findViewById(R.id.viewLocationField);

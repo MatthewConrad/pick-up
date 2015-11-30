@@ -11,7 +11,7 @@ import android.content.SharedPreferences;
 public class User_LocalDB {
 
     public static final String SP_NAME = "userDetails";
-    SharedPreferences userLocalDB;
+   private SharedPreferences userLocalDB;
 
 
     public User_LocalDB(Context context){
@@ -25,11 +25,12 @@ public class User_LocalDB {
         spEditor.putString("password", user_class.password);
         spEditor.apply();
     }*/
-    public void storeData(User user){
+    public void storeData(User user, boolean remember){
 
         SharedPreferences.Editor spEditor = userLocalDB.edit();
         spEditor.putString("username", user.username);
         spEditor.putString("password", user.password);
+        spEditor.putBoolean("remember", remember);
         spEditor.commit();
     }
 
@@ -49,7 +50,10 @@ public class User_LocalDB {
         spEditor.putBoolean("loggedIn", log);
         spEditor.apply();
     }
-
+    public boolean getRemember(){
+        boolean b = userLocalDB.getBoolean("remember",false);
+        return b;
+    }
     public void clearData(){
         SharedPreferences.Editor spEditor = userLocalDB.edit();
         spEditor.clear();

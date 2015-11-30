@@ -14,6 +14,7 @@ import com.parse.ParseUser;
  * Created by petrodanylewycz on 11/9/15.
  */
 public class MainActivity extends AppCompatActivity{
+private boolean rem = false;
 
     private String username, password;
     User_LocalDB userLocalDB;
@@ -29,13 +30,33 @@ public class MainActivity extends AppCompatActivity{
         userLocalDB.getLogin();
         username = userLocalDB.getUsername(username);
         password = userLocalDB.getPassword(password);
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+         rem = userLocalDB.getRemember();
 
-            @Override
-            public void run() {
+
+        Handler handler = new Handler();
+        //handler.postDelayed(new Runnable() {
+
+           // @Override
+          //  public void run() {
                 if (!username.equals("")) {
-                    ParseUser.logInInBackground(username, password, new LogInCallback() {
+                    if(rem)
+                    {
+                        Intent openLoginScreen = new Intent(MainActivity.this, LoginActivity.class);
+                        openLoginScreen.putExtra("usrname",userLocalDB.getUsername(""));
+                        openLoginScreen.putExtra("pwd",userLocalDB.getPassword(""));
+
+                        startActivity(openLoginScreen);
+
+                        finish();
+                    }
+                    else
+                    {
+                        userLocalDB.clearData();
+                        Intent openLoginScreen = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(openLoginScreen);
+                        finish();
+                    }
+                  /*  ParseUser.logInInBackground(username, password, new LogInCallback() {
                         @Override
                         public void done(ParseUser parseUser, ParseException e) {
                             if (parseUser != null) {
@@ -47,15 +68,15 @@ public class MainActivity extends AppCompatActivity{
                                 finish();
                             }
                         }
-                    });
+                    });*/
                 } else {
                     userLocalDB.clearData();
                     Intent openLoginScreen = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(openLoginScreen);
                     finish();
                 }
-            }
-        }, 2500);
+         //   }
+       // }, 2500);
 
 
     }
