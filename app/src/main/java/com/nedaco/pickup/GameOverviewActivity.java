@@ -108,7 +108,7 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
                 {
                     ParseUser.logOut();
                 }
-                intent = new Intent(GameOverviewActivity.this,LoginActivity.class);
+                intent = new Intent(GameOverviewActivity.this,MainActivity.class);
                 finish();
 
                 break;

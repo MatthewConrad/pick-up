@@ -128,7 +128,7 @@ public class PreferencesActivity extends AppCompatActivity {
                     ParseUser.logOut();
                 }
 
-                intent = new Intent(PreferencesActivity.this,LoginActivity.class);
+                intent = new Intent(PreferencesActivity.this,MainActivity.class);
                 finish();
 
                 break;

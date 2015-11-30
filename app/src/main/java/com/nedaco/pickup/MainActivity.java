@@ -33,7 +33,7 @@ private boolean rem = false;
          rem = userLocalDB.getRemember();
 
 
-        Handler handler = new Handler();
+        //Handler handler = new Handler();
         //handler.postDelayed(new Runnable() {
 
            // @Override

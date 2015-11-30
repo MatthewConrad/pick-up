@@ -1,10 +1,13 @@
 package com.nedaco.pickup;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -173,12 +176,23 @@ public class CreateGameActivity extends AppCompatActivity implements
         mCreateGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                storeGame();
+                if(isConnected(getApplicationContext())) {
+                    storeGame();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(),"No Internet Connection!", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
     }
-
+    public boolean isConnected(Context context) {
+        ConnectivityManager cm =(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+        return isConnected;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu_maps_activity; this adds items to the action bar if it is present.
@@ -214,7 +228,7 @@ public class CreateGameActivity extends AppCompatActivity implements
                     user.logOut();
                 }
 
-                intent = new Intent(CreateGameActivity.this,LoginActivity.class);
+                intent = new Intent(CreateGameActivity.this,MainActivity.class);
                 finish();
 
                 break;

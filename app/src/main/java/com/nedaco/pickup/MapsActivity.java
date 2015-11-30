@@ -2,11 +2,14 @@ package com.nedaco.pickup;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -20,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -88,28 +92,43 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "Activity onResume() called.");
-        if (ContextCompat.checkSelfPermission(MapsActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            getLocationPermission();
-        }else {
-            initializeMapServices();
-            setUpMapIfNeeded();
-            if (mGoogleApiClient != null) {
-                mGoogleApiClient.connect();
-            }
+        if(!isConnected(getApplicationContext())) {
 
-            if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
-                getGames();
-            }setUpMapIfNeeded();
-            if (mGoogleApiClient != null) {
-                mGoogleApiClient.connect();
-            }
+            Toast.makeText(getApplicationContext(), "No Internet Connection!", Toast.LENGTH_LONG).show();
+        }
+        else {
 
-            if(LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null){
-                getGames();
+            if (ContextCompat.checkSelfPermission(MapsActivity.this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                getLocationPermission();
+            } else {
+                initializeMapServices();
+                setUpMapIfNeeded();
+                if (mGoogleApiClient != null) {
+                    mGoogleApiClient.connect();
+                }
+
+                if (LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null) {
+                    getGames();
+                }
+                setUpMapIfNeeded();
+                if (mGoogleApiClient != null) {
+                    mGoogleApiClient.connect();
+                }
+
+                if (LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient) != null) {
+                    getGames();
+                }
             }
         }
+
+    }
+    public boolean isConnected(Context context) {
+        ConnectivityManager cm =(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
+        return isConnected;
     }
 
     @Override
@@ -173,7 +192,7 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
 
                 }
 
-                intent = new Intent(MapsActivity.this,LoginActivity.class);
+                intent = new Intent(MapsActivity.this,MainActivity.class);
                 finish();
 
                 break;
@@ -194,7 +213,14 @@ public class MapsActivity extends AppCompatActivity implements GoogleApiClient.C
         switch (v.getId()) {
             case R.id.mapCenterBtn:
                 Log.i("OnClick", "recenter camera!");
-                recenterCamera();
+                if(isConnected(getApplicationContext())) {
+                    recenterCamera();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "No Internet Connection!", Toast.LENGTH_LONG).show();
+
+                }
                 break;
             case R.id.mapAddBtn:
                 Intent intent = new Intent(MapsActivity.this, CreateGameActivity.class);
