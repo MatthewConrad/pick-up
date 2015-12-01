@@ -129,6 +129,7 @@ public class GameOverviewActivity extends AppCompatActivity implements View.OnCl
         switch (v.getId()) {
             case R.id.joinGameButton:
                 Log.i("OnClick", "Join Game");
+                //add current user to list of players in the game
                 mGame.addUnique("registered_players", ParseUser.getCurrentUser().get("email"));
                 try {
                     mGame.save();

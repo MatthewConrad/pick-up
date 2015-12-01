@@ -119,6 +119,7 @@ public class CreateGameActivity extends AppCompatActivity implements
                     String value = mNumPlayersEditText.getText().toString();
                     if (!value.matches("")) {
                         int intValue = Integer.parseInt(value);
+                        //constrain player count between 2 and 16
                         if (intValue > 16) mNumPlayersEditText.setText("16");
                         else if (intValue < 2) mNumPlayersEditText.setText("2");
                     }
@@ -131,17 +132,20 @@ public class CreateGameActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
+                //launch android time picker for user to choose a time
                 TimePickerDialog timePicker = new TimePickerDialog(CreateGameActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                                 String meridien = "AM";
+                                //convert 24HR clock time to 12 HR clock time
                                 if (selectedHour > 12) {
                                     selectedHour -= 11;
                                     meridien = "PM";
                                 } else if (selectedHour == 0) {
                                     selectedHour = 12;
                                 }
+                                //add zero padding for minutes less than 10
                                 if(selectedMinute < 10){
                                     mTimeEditText.setText(selectedHour + ":0" + selectedMinute + " " + meridien);
                                 }else{

@@ -113,6 +113,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
+                //retrieve appropriate strings for username and password and attempt to log in the user
                 String username = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
                  user = new User(username, password);
@@ -126,6 +127,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             @Override
             public void onClick(View view) {
 
+                //launch register activity when user clicks sign up
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
 
@@ -193,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     public void validateUser()
     {
+        //use built-in parse function to log-in user
         ParseUser.logInInBackground(mEmailView.getText().toString(), mPasswordView.getText().toString(), new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
@@ -220,6 +223,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     }
     public void fail()
     {
+        //alert user to login failure with a short toast
         Toast.makeText(getApplicationContext(), "Login Failed, Try Again", Toast.LENGTH_SHORT).show();
     }
     /**

@@ -50,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void signUp()
     {
+        //create new ParseUser object with appropriate strings from text views
         ParseUser user = new ParseUser();
         user.setUsername(mEmailView.getText().toString());
         user.setPassword(mPasswordView.getText().toString());
@@ -59,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
        //user.put("phone", "650-253-0000");
         ParseUser currentUser = ParseUser.getCurrentUser();
         currentUser.logOut();
+        //use parse function to register the new user
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {

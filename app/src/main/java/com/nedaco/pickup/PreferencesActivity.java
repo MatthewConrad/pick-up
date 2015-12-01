@@ -68,12 +68,13 @@ public class PreferencesActivity extends AppCompatActivity {
                 progressChanged = progress;
             }
             public void onStopTrackingTouch(SeekBar seekBar) {
+                //after user has made selection, update display items and save the new preference
                 distBar.setSecondaryProgress(progressChanged);
                 mDistanceText.setText(Integer.toString(progressChanged));
+                //save updated preference to parse database
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 ParseQuery<ParseObject> preferenceQuery = ParseQuery.getQuery("Preferences");
                 preferenceQuery.whereEqualTo("user", currentUser);
-                //ParseObject preferences;
                 preferenceQuery.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, com.parse.ParseException e) {
